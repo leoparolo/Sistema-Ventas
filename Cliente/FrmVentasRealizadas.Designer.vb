@@ -28,13 +28,12 @@ Partial Class FrmVentasRealizadas
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.gvDetallePedido = New System.Windows.Forms.DataGridView()
         Me.txtNroPedido = New System.Windows.Forms.TextBox()
-        Me.btnBuscar = New System.Windows.Forms.Button()
-        Me.chkNroPedido = New System.Windows.Forms.CheckBox()
-        Me.chkCliente = New System.Windows.Forms.CheckBox()
-        Me.chkFechaPedido = New System.Windows.Forms.CheckBox()
-        Me.chkSinFiltro = New System.Windows.Forms.CheckBox()
         Me.pnlFiltros = New System.Windows.Forms.Panel()
-        Me.cmbClientes = New System.Windows.Forms.ComboBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.txtCliente = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.btnBuscar = New System.Windows.Forms.Button()
         CType(Me.gvPedidos, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         CType(Me.gvDetallePedido, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -61,7 +60,7 @@ Partial Class FrmVentasRealizadas
         '
         'datePedido
         '
-        Me.datePedido.Location = New System.Drawing.Point(434, 5)
+        Me.datePedido.Location = New System.Drawing.Point(443, 5)
         Me.datePedido.Margin = New System.Windows.Forms.Padding(5)
         Me.datePedido.Name = "datePedido"
         Me.datePedido.Size = New System.Drawing.Size(266, 27)
@@ -106,90 +105,69 @@ Partial Class FrmVentasRealizadas
         '
         'txtNroPedido
         '
-        Me.txtNroPedido.Location = New System.Drawing.Point(819, 6)
+        Me.txtNroPedido.Location = New System.Drawing.Point(813, 5)
         Me.txtNroPedido.Margin = New System.Windows.Forms.Padding(5)
         Me.txtNroPedido.Name = "txtNroPedido"
         Me.txtNroPedido.Size = New System.Drawing.Size(132, 27)
         Me.txtNroPedido.TabIndex = 31
         '
-        'btnBuscar
-        '
-        Me.btnBuscar.Location = New System.Drawing.Point(108, 14)
-        Me.btnBuscar.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
-        Me.btnBuscar.Name = "btnBuscar"
-        Me.btnBuscar.Size = New System.Drawing.Size(86, 27)
-        Me.btnBuscar.TabIndex = 33
-        Me.btnBuscar.Text = "Buscar"
-        Me.btnBuscar.UseVisualStyleBackColor = True
-        '
-        'chkNroPedido
-        '
-        Me.chkNroPedido.AutoSize = True
-        Me.chkNroPedido.Location = New System.Drawing.Point(708, 8)
-        Me.chkNroPedido.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
-        Me.chkNroPedido.Name = "chkNroPedido"
-        Me.chkNroPedido.Size = New System.Drawing.Size(103, 24)
-        Me.chkNroPedido.TabIndex = 34
-        Me.chkNroPedido.Text = "Nro Pedido"
-        Me.chkNroPedido.UseVisualStyleBackColor = True
-        '
-        'chkCliente
-        '
-        Me.chkCliente.AutoSize = True
-        Me.chkCliente.Location = New System.Drawing.Point(3, 8)
-        Me.chkCliente.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
-        Me.chkCliente.Name = "chkCliente"
-        Me.chkCliente.Size = New System.Drawing.Size(74, 24)
-        Me.chkCliente.TabIndex = 35
-        Me.chkCliente.Text = "Cliente"
-        Me.chkCliente.UseVisualStyleBackColor = True
-        '
-        'chkFechaPedido
-        '
-        Me.chkFechaPedido.AutoSize = True
-        Me.chkFechaPedido.Location = New System.Drawing.Point(308, 8)
-        Me.chkFechaPedido.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
-        Me.chkFechaPedido.Name = "chkFechaPedido"
-        Me.chkFechaPedido.Size = New System.Drawing.Size(118, 24)
-        Me.chkFechaPedido.TabIndex = 36
-        Me.chkFechaPedido.Text = "Fecha pedido"
-        Me.chkFechaPedido.UseVisualStyleBackColor = True
-        '
-        'chkSinFiltro
-        '
-        Me.chkSinFiltro.AutoSize = True
-        Me.chkSinFiltro.Checked = True
-        Me.chkSinFiltro.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkSinFiltro.Location = New System.Drawing.Point(18, 15)
-        Me.chkSinFiltro.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
-        Me.chkSinFiltro.Name = "chkSinFiltro"
-        Me.chkSinFiltro.Size = New System.Drawing.Size(84, 24)
-        Me.chkSinFiltro.TabIndex = 37
-        Me.chkSinFiltro.Text = "Sin filtro"
-        Me.chkSinFiltro.UseVisualStyleBackColor = True
-        '
         'pnlFiltros
         '
-        Me.pnlFiltros.Controls.Add(Me.cmbClientes)
-        Me.pnlFiltros.Controls.Add(Me.chkCliente)
-        Me.pnlFiltros.Controls.Add(Me.chkFechaPedido)
-        Me.pnlFiltros.Controls.Add(Me.chkNroPedido)
+        Me.pnlFiltros.Controls.Add(Me.btnBuscar)
+        Me.pnlFiltros.Controls.Add(Me.Label4)
+        Me.pnlFiltros.Controls.Add(Me.Label2)
+        Me.pnlFiltros.Controls.Add(Me.txtCliente)
+        Me.pnlFiltros.Controls.Add(Me.Label1)
         Me.pnlFiltros.Controls.Add(Me.txtNroPedido)
         Me.pnlFiltros.Controls.Add(Me.datePedido)
-        Me.pnlFiltros.Location = New System.Drawing.Point(209, 6)
+        Me.pnlFiltros.Location = New System.Drawing.Point(18, 6)
         Me.pnlFiltros.Name = "pnlFiltros"
-        Me.pnlFiltros.Size = New System.Drawing.Size(960, 40)
+        Me.pnlFiltros.Size = New System.Drawing.Size(1051, 40)
         Me.pnlFiltros.TabIndex = 31
         '
-        'cmbClientes
+        'Label1
         '
-        Me.cmbClientes.DisplayMember = "Cliente"
-        Me.cmbClientes.FormattingEnabled = True
-        Me.cmbClientes.Location = New System.Drawing.Point(83, 7)
-        Me.cmbClientes.Name = "cmbClientes"
-        Me.cmbClientes.Size = New System.Drawing.Size(209, 28)
-        Me.cmbClientes.TabIndex = 38
-        Me.cmbClientes.ValueMember = "Cliente"
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(3, 10)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(58, 20)
+        Me.Label1.TabIndex = 39
+        Me.Label1.Text = "Cliente:"
+        '
+        'txtCliente
+        '
+        Me.txtCliente.Location = New System.Drawing.Point(66, 7)
+        Me.txtCliente.Margin = New System.Windows.Forms.Padding(5)
+        Me.txtCliente.Name = "txtCliente"
+        Me.txtCliente.Size = New System.Drawing.Size(311, 27)
+        Me.txtCliente.TabIndex = 40
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(385, 10)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(50, 20)
+        Me.Label2.TabIndex = 41
+        Me.Label2.Text = "Fecha:"
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(717, 10)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(88, 20)
+        Me.Label4.TabIndex = 42
+        Me.Label4.Text = "Num. Venta:"
+        '
+        'btnBuscar
+        '
+        Me.btnBuscar.Location = New System.Drawing.Point(962, 2)
+        Me.btnBuscar.Name = "btnBuscar"
+        Me.btnBuscar.Size = New System.Drawing.Size(75, 36)
+        Me.btnBuscar.TabIndex = 31
+        Me.btnBuscar.Text = "Buscar"
+        Me.btnBuscar.UseVisualStyleBackColor = True
         '
         'FrmVentasRealizadas
         '
@@ -197,8 +175,6 @@ Partial Class FrmVentasRealizadas
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1183, 634)
         Me.Controls.Add(Me.pnlFiltros)
-        Me.Controls.Add(Me.chkSinFiltro)
-        Me.Controls.Add(Me.btnBuscar)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.gvPedidos)
         Me.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -213,7 +189,6 @@ Partial Class FrmVentasRealizadas
         Me.pnlFiltros.ResumeLayout(False)
         Me.pnlFiltros.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
 
@@ -223,11 +198,10 @@ Partial Class FrmVentasRealizadas
     Friend WithEvents Panel1 As Panel
     Friend WithEvents gvDetallePedido As DataGridView
     Friend WithEvents txtNroPedido As TextBox
-    Friend WithEvents btnBuscar As Button
-    Friend WithEvents chkNroPedido As CheckBox
-    Friend WithEvents chkCliente As CheckBox
-    Friend WithEvents chkFechaPedido As CheckBox
-    Friend WithEvents chkSinFiltro As CheckBox
     Friend WithEvents pnlFiltros As Panel
-    Friend WithEvents cmbClientes As ComboBox
+    Friend WithEvents Label4 As Label
+    Friend WithEvents Label2 As Label
+    Friend WithEvents txtCliente As TextBox
+    Friend WithEvents Label1 As Label
+    Friend WithEvents btnBuscar As Button
 End Class

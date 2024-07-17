@@ -75,7 +75,6 @@
     <Compile Include="DTO\Cliente.vb" />
     <Compile Include="DTO\VentaDetalle.vb" />
     <Compile Include="DTO\Venta.vb" />
-    <Compile Include="DTO\Vistas\rpVentaDetalle.vb" />
     <Compile Include="Util\CustomMessage.vb" />
     <Compile Include="DTO\Producto.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

@@ -1,4 +1,4 @@
-﻿Imports ControladorLib
+﻿Imports Controlador
 
 Public Class FrmPresupuestos
     Private Sub FrmPresupuestos_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -9,12 +9,7 @@ Public Class FrmPresupuestos
         cmbAnio.SelectedItem = anio
 
         cargarPresupuesto()
-
-        For Each column As DataGridViewColumn In gvPrespuestoMensual.Columns
-            column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
-            column.HeaderCell.Style.Font = New Font(gvPrespuestoMensual.Font, FontStyle.Bold)
-            column.ReadOnly = True
-        Next
+        FormatColumns(gvPrespuestoMensual)
     End Sub
 
     Private Sub CargarCombobox()

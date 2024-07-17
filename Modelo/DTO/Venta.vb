@@ -1,8 +1,31 @@
-﻿Public Class Venta
+﻿Imports System.ComponentModel
+
+Public Class Ventas
+    Private _Ventas As BindingList(Of Venta)
+    Public Property Ventas As BindingList(Of Venta)
+        Get
+            Return _Ventas
+        End Get
+        Set
+            _Ventas = Value
+        End Set
+    End Property
+End Class
+Public Class Venta
     Private _ID As Integer
     Private _IDCliente As Integer
     Private _Fecha As DateTime
     Private _Total As Double
+    Private _Detalle As BindingList(Of VentaDetalle)
+
+    Public Property Detalle As BindingList(Of VentaDetalle)
+        Get
+            Return _Detalle
+        End Get
+        Set
+            _Detalle = Value
+        End Set
+    End Property
 
     Public Property ID As Integer
         Get

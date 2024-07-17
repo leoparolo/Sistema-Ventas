@@ -20,10 +20,10 @@
         SeleccionarForm(frmVentaProductos, SplitContainer1)
     End Sub
 
-    'Private Sub EliminarModificarPedidoToolStrip_Click(sender As Object, e As EventArgs) Handles EliminarModificarPedidoToolStrip.Click
-    '    Dim frmBajaModifVentas As New FrmBajaModifVentas()
-    '    SeleccionarForm(frmBajaModifVentas)
-    'End Sub
+    Private Sub EliminarModificarPedidoToolStrip_Click(sender As Object, e As EventArgs) Handles EliminarModificarPedidoToolStrip.Click
+        Dim frmBajaModifVentas As New FrmBajaModifVentas()
+        SeleccionarForm(frmBajaModifVentas, SplitContainer1)
+    End Sub
 
     'Private Sub VentasRealizadasToolStrip_Click(sender As Object, e As EventArgs) Handles VentasRealizadasToolStrip.Click
     '    Dim frmVentasRealizadas As New FrmVentasRealizadas()

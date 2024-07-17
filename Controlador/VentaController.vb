@@ -1,4 +1,6 @@
 ﻿Imports System.ComponentModel
+Imports System.Data.SqlClient
+Imports System.Runtime.Remoting.Contexts
 Imports Modelo
 
 Public Class VentaController
@@ -17,12 +19,20 @@ Public Class VentaController
         Next
 
     End Sub
-
-    Public Function ValidarBusqueda() As CustomMessage
-
+    Public Function VerificarExistenciaPedido(nroPedido As Integer) As CustomMessage
+        Return _ventaDAO.ValidarBusquedaPedido(nroPedido)
     End Function
-    Public Function TraerPedido()
 
+    Public Function BuscarPedido(nroPedido As Integer) As Venta
+        Return _ventaDAO.TraerPedido(nroPedido)
     End Function
+
+    Public Function BuscarPedido(cliente As String, fecha As DateTime, nroPedido As Integer) As Ventas
+        Return _ventaDAO.TraerPedido(cliente, fecha, nroPedido)
+    End Function
+
+    Public Sub EliminarPedido(nroPedido As Integer)
+        _ventaDAO.Eliminar(nroPedido)
+    End Sub
 
 End Class

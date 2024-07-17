@@ -7,14 +7,14 @@ Public Class FrmBajaModifVentas
     Private ReadOnly _productoController As New ProductoController
     Private ReadOnly _ventaController As New VentaController
 
-
+    Private Pedido As Venta
     Private pedidoDetalle As New BindingList(Of VentaDetalle)
     Private orden As Integer = 1
     Private ImporteTotal As Double = 0.0
+    Private idCliente As Integer
 
     Private Sub FrmBajaModifVentas_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ConfigInicial()
-
     End Sub
 
     Private Sub ConfigInicial()
@@ -43,128 +43,67 @@ Public Class FrmBajaModifVentas
         gvDetallePedido.Columns(0).ReadOnly = False
     End Sub
 
-    Private Sub btnBuscarPedido_Click(sender As Object, e As EventArgs) Handles btnBuscarPedido.Click
+    Private Sub BtnBuscarPedido_Click(sender As Object, e As EventArgs) Handles btnBuscarPedido.Click
         'MY REFACTOR
-
-
-
-
-
-        If ValidarBusqueda() Then
+        Dim Validacion As CustomMessage = _ventaController.VerificarExistenciaPedido(txtBusqNroPedido.Text)
+        If Validacion.Accion = "Exito" Then
             pnlPedido.Visible = True
             pnlBusqProducto.Visible = True
-            CargarPedido()
+            Pedido = _ventaController.BuscarPedido(txtBusqNroPedido.Text)
             btnBuscarPedido.Enabled = False
             txtBusqNroPedido.Enabled = False
+            CargarPedido(Pedido)
+        Else
+            MessageBox.Show(Validacion.Mensaje, Validacion.Accion)
         End If
     End Sub
 
-    Private Function ValidarBusqueda() As Boolean
-        Dim result As Boolean = True
-        Dim venta As New CLVentas
-        Return venta.ValidaExistePedido(CInt(txtBusqNroPedido.Text))
-    End Function
-
-    Private Sub CargarPedido()
-        Dim venta As New CLVentas
-        Dim pedidoEntero As Tuple(Of DataTable, DataTable) = venta.TraerPedido(CInt(txtBusqNroPedido.Text))
-        Dim dtCabecera As DataTable = pedidoEntero.Item1
-        Dim dtDetalle As DataTable = pedidoEntero.item2
-        For Each cabecera As DataRow In dtCabecera.Rows
-            lblNroPedido.Text = cabecera("ID")
-            lblCliente.Text = $"{cabecera("IDCliente")} - {cabecera("Cliente")}"
-            idCliente = cabecera("IDCliente")
-            lblFechaPedido.Text = cabecera("Fecha")
-            lblImporteTotal.Text = cabecera("Total")
-        Next
-        For Each detalle In dtDetalle.Rows
-            Dim rowDetalle As DataRow = dtPedidoDetalle.NewRow()
-
-            rowDetalle("Orden") = orden
-            rowDetalle("IDProducto") = detalle("IDProducto")
-            rowDetalle("Producto") = detalle("Nombre")
-            rowDetalle("Cantidad") = detalle("Cantidad")
-            rowDetalle("PrecioUnitario") = detalle("PrecioUnitario")
-            rowDetalle("PrecioTotal") = detalle("PrecioTotal")
-
-            dtPedidoDetalle.Rows.Add(rowDetalle)
-
-            orden = orden + 1
-            ImporteTotal += rowDetalle("PrecioTotal")
-            lblImporteTotal.Text = ImporteTotal
-        Next
+    Private Sub CargarPedido(Pedido As Venta)
+        lblNroPedido.Text = Pedido.ID
+        lblCliente.Text = Pedido.IDCliente
+        idCliente = Pedido.IDCliente
+        lblFechaPedido.Text = Pedido.Fecha
+        lblImporteTotal.Text = Pedido.Total
+        ImporteTotal = Pedido.Total
+        pedidoDetalle = Pedido.Detalle
     End Sub
 
     Private Sub btnEliminarSeleccionados_Click(sender As Object, e As EventArgs) Handles btnEliminarSeleccionados.Click
-        ' Obtener el DataTable del DataGridView
-        Dim table As DataTable = CType(gvDetallePedido.DataSource, DataTable)
+        Dim listEliminar As New BindingList(Of VentaDetalle)
 
-        ' Crear una lista para almacenar las filas a eliminar
-        Dim filasAEliminar As New List(Of DataRow)()
-
-        ' Recorrer las filas del DataGridView
-        For Each row As DataGridViewRow In gvDetallePedido.Rows
-            ' Verificar si la fila está seleccionada (CheckBox marcado)
-            If Not row.IsNewRow AndAlso Convert.ToBoolean(row.Cells("Sel.").Value) Then
-                ' Obtener el DataRow correspondiente y agregarlo a la lista de filas a eliminar
-                Dim dataRow As DataRow = CType(row.DataBoundItem, DataRowView).Row
-                filasAEliminar.Add(dataRow)
+        For Each detalle In pedidoDetalle
+            If detalle.Seleccionado Then
+                listEliminar.Add(detalle)
             End If
         Next
 
-        ' Eliminar las filas del DataTable
-        For Each dataRow As DataRow In filasAEliminar
-            ImporteTotal = ImporteTotal - dataRow("PrecioTotal")
-            table.Rows.Remove(dataRow)
+        For Each detalleEliminar In listEliminar
+            pedidoDetalle.Remove(detalleEliminar)
+            ImporteTotal -= detalleEliminar.PrecioTotal
         Next
-        lblImporteTotal.Text = ImporteTotal
-        ' Refrescar el DataGridView
-        gvDetallePedido.DataSource = table
-    End Sub
 
-    Private Sub chkProductoBusqAvanzada_CheckedChanged(sender As Object, e As EventArgs)
-        If chkProductoBusqAvanzada.Checked Then
-            pnlProducto.Visible = True
-        Else
-            pnlProducto.Visible = False
-            CargarProductos()
-            cmbProductos.BackColor = Color.White
-            btnProdBorrarBusq.Visible = False
-        End If
+        lblImporteTotal.Text = ImporteTotal
+        gvDetallePedido.DataSource = pedidoDetalle
     End Sub
 
     Private Sub btnAgregarProducto_Click(sender As Object, e As EventArgs)
-        Dim rowDetalle As DataRow = dtPedidoDetalle.NewRow()
-        Dim productSelect As DataRowView = CType(cmbProductos.SelectedItem, DataRowView)
+        Dim productoDatos As Producto = cmbProductos.SelectedItem
+        Dim detalleDatos As New VentaDetalle With {
+            .Seleccionado = False,
+            .Orden = orden,
+            .IDProducto = productoDatos.ID,
+            .IDVenta = lblNroPedido.Text,
+            .ProductoNombre = productoDatos.Nombre,
+            .Cantidad = CInt(txtCantidad.Text),
+            .PrecioUnitario = productoDatos.Precio,
+            .PrecioTotal = CInt(txtCantidad.Text) * productoDatos.Precio}
 
-        rowDetalle("Orden") = orden
-        rowDetalle("IDProducto") = productSelect("ID")
-        rowDetalle("Producto") = productSelect("Nombre").ToString()
-        rowDetalle("Cantidad") = CInt(txtCantidad.Text)
-        rowDetalle("PrecioUnitario") = CDbl(productSelect("Precio"))
-        rowDetalle("PrecioTotal") = CInt(txtCantidad.Text) * CDbl(productSelect("Precio"))
+        pedidoDetalle.Add(detalleDatos)
 
-        dtPedidoDetalle.Rows.Add(rowDetalle)
+        orden += 1
+        ImporteTotal += detalleDatos.PrecioTotal
 
-        orden = orden + 1
-        ImporteTotal += rowDetalle("PrecioTotal")
         lblImporteTotal.Text = ImporteTotal
-    End Sub
-
-    Private Sub btnProductoBuscar_Click(sender As Object, e As EventArgs)
-        Dim metodo As String = cmbProductoTipoBusq.Text
-        Dim controlador As New CLProductos
-        cmbProductos.DataSource = controlador.BuscarProducto(metodo, txtProductoBusqueda.Text)
-        cmbProductos.DisplayMember = "Nombre"
-        cmbProductos.ValueMember = "Nombre"
-        cmbProductos.BackColor = Color.Orange
-        btnProdBorrarBusq.Visible = True
-    End Sub
-
-    Private Sub btnProdBorrarBusq_Click(sender As Object, e As EventArgs)
-        CargarProductos()
-        cmbProductos.BackColor = Color.White
-        btnProdBorrarBusq.Visible = False
     End Sub
 
     Private Sub btnSalir_Click(sender As Object, e As EventArgs) Handles btnSalir.Click
@@ -175,29 +114,28 @@ Public Class FrmBajaModifVentas
 
     Private Sub btnBorrarPedido_Click(sender As Object, e As EventArgs) Handles btnBorrarPedido.Click
         If MessageBox.Show("¿Desea eliminar el pedido?", "Confirmar eliminar pedido", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Dim venta As New CLVentas
-            venta.EliminarPedido(CInt(lblNroPedido.Text))
+            _ventaController.EliminarPedido(CInt(lblNroPedido.Text))
             MessageBox.Show("Pedido eliminado", "Confirmación pedido eliminado")
             pnlPedido.Visible = False
             pnlBusqProducto.Visible = False
-            pnlProducto.Visible = False
-            chkProductoBusqAvanzada.Checked = False
             txtBusqNroPedido.Enabled = True
             btnBuscarPedido.Enabled = True
         End If
     End Sub
 
     Private Sub btnGuardarCambios_Click(sender As Object, e As EventArgs) Handles btnGuardarCambios.Click
-        'Limpio registros en bd
-        Dim venta As New CLVentas
-        venta.EliminarPedido(CInt(lblNroPedido.Text), CDbl(lblImporteTotal.Text))
+        Dim cabeceraVenta As New Venta With {
+            .ID = CInt(lblNroPedido.Text),
+            .IDCliente = idCliente,
+            .Fecha = lblFechaPedido.Text,
+            .Total = CDbl(lblImporteTotal.Text)}
+        _ventaController.EliminarPedido(cabeceraVenta.ID)
+        _ventaController.InsertarVenta(cabeceraVenta, pedidoDetalle)
 
-        venta.InsertarPedido(CInt(lblNroPedido.Text), idCliente, CDate(lblFechaPedido.Text), CDbl(lblImporteTotal.Text))
+        MessageBox.Show($"Pedido nro. {lblNroPedido.Text} creado con exito!")
 
-        For Each artDetalle In dtPedidoDetalle.Rows
-            venta.InsertarDetallePedido(CInt(lblNroPedido.Text), artDetalle("IDProducto"), artDetalle("PrecioUnitario"), artDetalle("Cantidad"), artDetalle("PrecioTotal"))
-        Next
-        MessageBox.Show($"Pedido nro. {lblNroPedido.Text} actualizado con exito!")
-        Me.Close()
+        pedidoDetalle.Clear()
+        lblImporteTotal.Text = 0
+        ConfigInicial()
     End Sub
 End Class

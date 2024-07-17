@@ -12,7 +12,6 @@ Public Class FrmVentaProductos
     Private pedidoDetalle As New BindingList(Of VentaDetalle)
     Private Sub FrmVentaProductos_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ConfigInicial()
-
     End Sub
 
     Private Sub ConfigInicial()

@@ -35,7 +35,7 @@ Public Class ClienteDAO
         End Using
     End Sub
 
-    Public Function Insertar(_clienteDatos As Cliente)
+    Public Function Insertar(_clienteDatos As Cliente) As CustomMessage
         If _clienteDatos Is Nothing Then
             _customMsg = New CustomMessage With {
                 .Mensaje = "No existen datos para insertar",
